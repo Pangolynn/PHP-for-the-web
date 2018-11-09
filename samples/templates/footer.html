@@ -1,0 +1,20 @@
+ <!-- End Changeable content -->
+  </main>
+
+  <footer container class="siteFooter">
+    <p>Design uses <a href="#">Concise Css</a></p>
+    <p class="float-right">
+      <?php 
+        date_default_timezone_set('America/New_York');
+        
+        print date('g:i a l F j');
+      ?>
+    </p>
+  </footer>
+
+</body>
+<?php
+
+ob_end_flush();
+
+?>

@@ -1,20 +1,21 @@
- <!-- End Changeable content -->
-  </main>
-
-  <footer container class="siteFooter">
-    <p>Design uses <a href="#">Concise Css</a></p>
-    <p class="float-right">
-      <?php 
-        date_default_timezone_set('America/New_York');
-        
-        print date('g:i a l F j');
-      ?>
-    </p>
-  </footer>
-
-</body>
+<!-- End Changeable Content -->
 <?php
 
-ob_end_flush();
+  // Display Admin links if user is an admin 
+  // or the user just logged in
+
+  // basename($_SERVER['PHP_SELF']) returns the value of the current/'including' script
+  if ( (is_administrator() && (basename($_SERVER['PHP_SELF']) != 'logout.php')) OR
+    (isset($loggedin) && $loggedin) ) {
+
+      print '<hr><h3>Site Admin</h3><p><a href="add_quote.php"> Add Quote </a>
+      <a href="view_quotes.php"> View All Quotes </a>
+      <a href="logout.php"> Logout </a></p>';
+  } 
 
 ?>
+
+    </div>
+    <div id="footer">Content &copy; 2018</div>
+  </body>
+</html>

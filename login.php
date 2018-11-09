@@ -1,45 +1,50 @@
 <?php
 
-define('TITLE', 'Login');
-include('templates/header.html');
+  $loggedin = false;
+  $error = false;
 
-print '<h2>Login Form</h2>
-      <p>Users who are logged in can take advantage of certain features like meh</p>';
+  // Check for form submission
+  if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-      // Check to see if form has been submitted
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Form handling
+    if (!empty($_POST['email']) && !empty($_POST['password'])) {
 
-  // Handle the form
-  if ( (!empty($_POST['email'])) && (!empty($_POST['password'])) ) {
-    if ( (strtolower($_POST['email']) == 'me@example.com') && ($_POST['password'] == 'password') ) {
-      session_start();
-      $_SESSION['email'] = $_POST['email'];
-      $_SESSION['loggedin'] = time();
-      ob_end_clean();
-      header('Location: welcome.php');
-      exit();
-    } else {
-      print '<p class="text--error">The submitted email and password do not match those on file</p>';
+      // Check for valid credentials
+      if ( (strtolower($_POST['email']) == 'me@example.com') && ($_POST['password'] == 'testpass') ) {
+
+        // Set cookie
+        setcookie('Samuel', 'Clemens', time()+3600);
+
+        // Indicate logged in (for footer links)
+        $loggedin = true;
+
+      } else { // Invalid Credentials
+
+        $error = 'The submitted email address and password do not match those on file.';
+      }
+
+    } else { // Missing Field
+      $error = 'Please fill out all fields.';
     }
-  } else { 
-    print '<p class="text--error">Please make sure you enter an email and a password.</p>';
+
   }
-} else {
-  print '<form action="login.php" method="post" class="form--inline">
-    <p>
-      <label for="email">Email Address:</label>
-      <input type="email" name="email" size="20">
-    </p>
-    <p>
-      <label for="password">Password</label>
-      <input type="password" name="password" size="20">
-    </p>
-    <p>
-      <input type="submit" name="submit" value="Log In" class="button--pill">
-    </p>
-  </form>';
-}
 
-include('templates/footer.html');
+  define('TITLE', 'Login');
+  include('templates/header.html');
 
-?>
+  if ($error) {
+    print '<p class="error">' . $error . '</p>';
+  }
+
+  if ($loggedin) {
+    print '<p>You are now logged in.</p>';
+  } else {
+    print '<h2>Login Form</h2>
+    <form action="login.php" method="post">
+      <p><label>Email Address: <input type="email" name="email"></label></p>
+      <p><label>Password: <input type="password" name="password"></label></p>
+      <p><input type="submit" name="submit" value="Log In"></p>
+    </form>';
+  }
+
+  include('templates/footer.html');
